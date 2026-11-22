@@ -102,7 +102,6 @@ DESIGN_STUDIO_MENU_ITEMS = [
     {"id": "calendar", "url_name": "cal_kit:calendar", "match_urls": ["calendar"], "default_label": "Kalender", "icon": "bi-calendar3", "zone": "main", "display": "icon_text", "visible": True, "order": 7},
     {"id": "notifications", "url_name": "notify_kit:inbox", "match_urls": ["inbox"], "default_label": "Meldungen", "icon": "bi-bell", "zone": "utility", "display": "icon_only", "visible": True, "order": 1},
     {"id": "profile", "url_name": "auth_kit:profile", "match_urls": ["profile"], "default_label": "Einstellungen", "icon": "bi-gear", "zone": "utility", "display": "icon_only", "visible": True, "order": 2, "locked": True},
-{% else %}    {"id": "design_studio", "url_name": "design_studio:studio", "match_urls": ["studio"], "default_label": "Design Studio", "icon": "bi-gear", "zone": "utility", "display": "icon_only", "visible": True, "order": 2, "locked": True},
     {"id": "django_admin", "url_name": "admin:index", "url": "/admin/", "match_urls": [], "default_label": "Django Admin", "icon": "bi-shield-lock", "zone": "utility", "display": "icon_only", "visible": True, "order": 4, "staff_only": True},
     {"id": "night_mode", "url_name": "design_studio:toggle_night", "match_urls": [], "default_label": "Tag / Nacht", "icon": "bi-moon-stars", "zone": "utility", "display": "icon_only", "visible": True, "order": 5},
 ]
