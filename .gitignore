@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.env
+data/
+staticfiles/
+media/
+db.sqlite3
+.venv/
+venv/
+dist/
+*-image.tar

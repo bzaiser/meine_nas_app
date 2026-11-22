@@ -1,0 +1,19 @@
+services:
+  web:
+    image: meine_nas_app:latest
+    container_name: meine_nas_app
+    command: sh /app/entrypoint.sh
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - PYTHONPATH=/opt/ds-pkg
+      - DESIGN_STUDIO_TARGET=/opt/ds-pkg
+    ports:
+      - "8020:8000"
+    volumes:
+      - .:/app
+      - ./data:/app/data
+      - ds_pkg:/opt/ds-pkg
+
+volumes:
+  ds_pkg:

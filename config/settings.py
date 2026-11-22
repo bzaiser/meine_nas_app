@@ -1,0 +1,113 @@
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-insecure-key")
+DEBUG = os.environ.get("DJANGO_DEBUG", "True").lower() in ("1", "true", "yes")
+ALLOWED_HOSTS = [h.strip() for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split(",") if h.strip()]
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",") if o.strip()]
+
+INSTALLED_APPS = [
+    "design_studio",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "domain_kit",
+    "auth_kit",
+    "notify_kit",
+    "cal_kit",
+    "grid_kit",
+    "seed_kit",
+    "ops_kit",
+    "apps.core",
+]
+
+try:
+    from ops_kit.runtime import apply_runtime_installed_apps
+    apply_runtime_installed_apps(INSTALLED_APPS, BASE_DIR)
+except ImportError:
+    pass
+
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+ROOT_URLCONF = "config.urls"
+WSGI_APPLICATION = "config.wsgi.application"
+
+TEMPLATES = [{
+    "BACKEND": "django.template.backends.django.DjangoTemplates",
+    "DIRS": [BASE_DIR / "templates"],
+    "APP_DIRS": True,
+    "OPTIONS": {
+        "context_processors": [
+            "django.template.context_processors.request",
+            "django.contrib.auth.context_processors.auth",
+            "django.contrib.messages.context_processors.messages",
+            "design_studio.context_processors.theme_context",
+            "domain_kit.context_processors.domain_context",
+            "notify_kit.context_processors.notify_context",
+        ],
+    },
+}]
+
+try:
+    from ops_kit.runtime import filter_runtime_context_processors
+    TEMPLATES[0]["OPTIONS"]["context_processors"] = filter_runtime_context_processors(
+        TEMPLATES[0]["OPTIONS"]["context_processors"], INSTALLED_APPS
+    )
+except ImportError:
+    pass
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "data" / "db.sqlite3",
+    }
+}
+
+LANGUAGE_CODE = "de"
+TIME_ZONE = "Europe/Berlin"
+USE_I18N = True
+USE_TZ = True
+
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "data" / "media"
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedStaticFilesStorage"},
+}
+
+DESIGN_STUDIO_APP_NAME = os.environ.get("DESIGN_STUDIO_APP_NAME", "Meine NAS App")
+OPS_GITHUB_REPO = os.environ.get("OPS_GITHUB_REPO", "bzaiser/meine_nas_app")
+DESIGN_STUDIO_MENU_ITEMS = [
+    {"id": "home", "url_name": "home", "match_urls": ["home"], "default_label": "Übersicht", "icon": "bi-speedometer2", "zone": "main", "display": "icon_text", "visible": True, "order": 1},
+    {"id": "master_data", "url_name": "domain_kit:settings", "match_urls": ["settings"], "default_label": "Stammdaten", "icon": "bi-tags", "zone": "main", "display": "icon_text", "visible": True, "order": 2},
+    {"id": "persons", "url_name": "domain_kit:persons", "match_urls": ["persons"], "default_label": "Personen", "icon": "bi-people", "zone": "main", "display": "icon_text", "visible": True, "order": 3},
+    {"id": "assets", "url_name": "domain_kit:assets", "match_urls": ["assets"], "default_label": "Assets", "icon": "bi-boxes", "zone": "main", "display": "icon_text", "visible": True, "order": 4},
+    {"id": "documents", "url_name": "domain_kit:documents", "match_urls": ["documents"], "default_label": "Dokumente", "icon": "bi-folder2-open", "zone": "main", "display": "icon_text", "visible": True, "order": 5},
+    {"id": "search", "url_name": "domain_kit:search", "match_urls": ["search"], "default_label": "Suche", "icon": "bi-search", "zone": "main", "display": "icon_text", "visible": True, "order": 6},
+    {"id": "calendar", "url_name": "cal_kit:calendar", "match_urls": ["calendar"], "default_label": "Kalender", "icon": "bi-calendar3", "zone": "main", "display": "icon_text", "visible": True, "order": 7},
+    {"id": "notifications", "url_name": "notify_kit:inbox", "match_urls": ["inbox"], "default_label": "Meldungen", "icon": "bi-bell", "zone": "utility", "display": "icon_only", "visible": True, "order": 1},
+    {"id": "profile", "url_name": "auth_kit:profile", "match_urls": ["profile"], "default_label": "Einstellungen", "icon": "bi-gear", "zone": "utility", "display": "icon_only", "visible": True, "order": 2, "locked": True},
+{% else %}    {"id": "design_studio", "url_name": "design_studio:studio", "match_urls": ["studio"], "default_label": "Design Studio", "icon": "bi-gear", "zone": "utility", "display": "icon_only", "visible": True, "order": 2, "locked": True},
+    {"id": "django_admin", "url_name": "admin:index", "url": "/admin/", "match_urls": [], "default_label": "Django Admin", "icon": "bi-shield-lock", "zone": "utility", "display": "icon_only", "visible": True, "order": 4, "staff_only": True},
+    {"id": "night_mode", "url_name": "design_studio:toggle_night", "match_urls": [], "default_label": "Tag / Nacht", "icon": "bi-moon-stars", "zone": "utility", "display": "icon_only", "visible": True, "order": 5},
+]
+
+LOGIN_URL = "auth_kit:login"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "auth_kit:login"
+
