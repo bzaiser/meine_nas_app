@@ -10,7 +10,7 @@ urlpatterns = [
     path("design-studio/", include("design_studio.urls")),
     path("ops/", include("ops_kit.urls")),
     re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
-    path("app/", dashboard_view, name="home" if "site_kit" in settings.INSTALLED_APPS else "app_home"),
+    path("app/", dashboard_view, name="app_home"),
 ]
 
 try:
