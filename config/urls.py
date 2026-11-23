@@ -19,6 +19,7 @@ try:
     urlpatterns += optional_kit_path("auth_kit", "accounts/", "auth_kit.urls")
     urlpatterns += optional_kit_path("notify_kit", "notifications/", "notify_kit.urls")
     urlpatterns += optional_kit_path("cal_kit", "calendar/", "cal_kit.urls")
+    urlpatterns += optional_kit_path("seed_kit", "setup/", "seed_kit.urls")
     urlpatterns += get_runtime_urlpatterns(settings.BASE_DIR, urlpatterns)
 except ImportError:
     urlpatterns += [
@@ -26,6 +27,7 @@ except ImportError:
         path("accounts/", include("auth_kit.urls")),
         path("notifications/", include("notify_kit.urls")),
         path("calendar/", include("cal_kit.urls")),
+        path("setup/", include("seed_kit.urls")),
     ]
 
 if "site_kit" not in settings.INSTALLED_APPS:
