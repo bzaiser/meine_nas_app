@@ -93,7 +93,7 @@ STORAGES = {
 DESIGN_STUDIO_APP_NAME = os.environ.get("DESIGN_STUDIO_APP_NAME", "Meine NAS App")
 OPS_GITHUB_REPO = os.environ.get("OPS_GITHUB_REPO", "bzaiser/meine_nas_app")
 DESIGN_STUDIO_MENU_ITEMS = [
-    {"id": "home", "url_name": "home", "match_urls": ["home"], "default_label": "Übersicht", "icon": "bi-speedometer2", "zone": "main", "display": "icon_text", "visible": True, "order": 1},
+    {"id": "home", "url_name": "app_home", "match_urls": ["app_home", "home"], "default_label": "Übersicht", "icon": "bi-speedometer2", "zone": "main", "display": "icon_text", "visible": True, "order": 1},
     {"id": "master_data", "url_name": "domain_kit:settings", "match_urls": ["settings"], "default_label": "Stammdaten", "icon": "bi-tags", "zone": "main", "display": "icon_text", "visible": True, "order": 2},
     {"id": "persons", "url_name": "domain_kit:persons", "match_urls": ["persons"], "default_label": "Personen", "icon": "bi-people", "zone": "main", "display": "icon_text", "visible": True, "order": 3},
     {"id": "assets", "url_name": "domain_kit:assets", "match_urls": ["assets"], "default_label": "Assets", "icon": "bi-boxes", "zone": "main", "display": "icon_text", "visible": True, "order": 4},
@@ -107,6 +107,6 @@ DESIGN_STUDIO_MENU_ITEMS = [
 ]
 
 LOGIN_URL = "auth_kit:login"
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/app/"
 LOGOUT_REDIRECT_URL = "auth_kit:login"
 
