@@ -13,11 +13,14 @@ def dashboard_view(request):
                 return redirect("seed_kit:wizard")
         except Exception:
             pass
-    if not getattr(request.user, "is_staff", False) and apps.is_installed("domain_kit"):
-        try:
-            from domain_kit.services import has_any_domain_access
-            if not has_any_domain_access(request.user):
-                return redirect("domain_kit:self_service")
-        except Exception:
-            pass
+    if not getattr(request.user, "is_staff", False):
+        if apps.is_installed("site_kit") and request.user.groups.filter(name__in=("Redakteur", "Redaktion")).exists():
+            return redirect("site_kit:cockpit")
+        if apps.is_installed("domain_kit"):
+            try:
+                from domain_kit.services import has_any_domain_access
+                if not has_any_domain_access(request.user):
+                    return redirect("domain_kit:self_service")
+            except Exception:
+                pass
     return render(request, "dashboard.html")
