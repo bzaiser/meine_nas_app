@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
+from django.views.static import serve
 
 from apps.core.views import dashboard_view
 
@@ -8,6 +9,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("design-studio/", include("design_studio.urls")),
     path("ops/", include("ops_kit.urls")),
+    re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
     path("app/", dashboard_view, name="home" if "site_kit" in settings.INSTALLED_APPS else "app_home"),
 ]
 
