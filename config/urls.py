@@ -8,6 +8,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("design-studio/", include("design_studio.urls")),
     path("ops/", include("ops_kit.urls")),
+    path("app/", dashboard_view, name="home" if "site_kit" in settings.INSTALLED_APPS else "app_home"),
 ]
 
 try:
@@ -25,6 +26,7 @@ except ImportError:
         path("calendar/", include("cal_kit.urls")),
     ]
 
-urlpatterns += [
-    path("", dashboard_view, name="home"),
-]
+if "site_kit" not in settings.INSTALLED_APPS:
+    urlpatterns += [
+        path("", dashboard_view, name="home"),
+    ]
